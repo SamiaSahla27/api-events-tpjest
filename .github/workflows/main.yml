@@ -30,4 +30,6 @@ jobs:
 
     # LA LIGNE QUI CHANGE TOUT :
       - name: Exécuter les tests avec Jest
-        run: npm test
+        run: npx jest
+
+  
