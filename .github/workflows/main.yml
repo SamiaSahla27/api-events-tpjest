@@ -27,3 +27,7 @@ jobs:
       # C. Installer les dépendances (npm install)
       - name: Installation des dépendances
         run: npm install
+
+    # LA LIGNE QUI CHANGE TOUT :
+      - name: Exécuter les tests avec Jest
+        run: npm test
