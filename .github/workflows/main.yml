@@ -23,6 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm' # Le robot prépare le terrain (il sort les outils du coffre)
 
       # C. Installer les dépendances (npm install)
       - name: Installation des dépendances
