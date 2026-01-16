@@ -2,13 +2,16 @@ const express = require('express');
 const app = express();
 app.use(express.json()); // Pour lire le JSON dans le corps des requêtes
 
+
+
 app.get('/events', (req, res) => {
     res.json({ message: "Bienvenue sur l'API Events !" });
 });
 
 // POST /events : Créer un nouvel événement
 app.post('/events', (req, res) => {
-    const newEvent = req.body;
+    try{
+            const newEvent = req.body;
 
     // --- LOGIQUE MÉTIER (À tester via CI/CD !) ---
 
@@ -35,9 +38,16 @@ app.post('/events', (req, res) => {
 
     // Ajout de l'événement (Simulation ID auto-incrémenté)
     newEvent.id = events.length + 1;
+    console.log("Données reçues :", newEvent);
     events.push(newEvent);
 
     res.status(201).json(newEvent);
+    } catch (error) {
+        console.error("LE BUG EST ICI :", error); // Ceci s'affichera dans votre terminal
+        res.status(500).json({ message: error.message });
+
+    }
+
 });
 
 // Export de l'app (nécessaire pour les tests unitaires sans lancer le serveur)
