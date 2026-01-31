@@ -3,8 +3,8 @@ name: Pipeline CI API Events
 
 # 2. Le Déclencheur (Trigger) : Quand le robot doit-il s'allumer ?
 on:
-  push:
-    branches: [ "main" ] # Dès qu'on push sur la branche main
+  pull_request:
+    branches: [ main ] # Le robot attend les élèves à la porte de main
 
 # 3. La liste des tâches (Jobs)
 jobs:
