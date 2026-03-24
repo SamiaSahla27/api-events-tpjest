@@ -1,0 +1,40 @@
+name: Pipeline Industrielle Event-IT
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  audit-qualite:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js (avec Cache)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm' # <--- Optimisation apprise ensemble
+
+      - name: Installation
+        run: npm ci
+
+      - name: Tests & Sécurité
+        run: npm test
+        env:
+          SUPER_SECRET_KEY: ${{ secrets.MY_API_KEY }} # <--- Levier n°1
+
+      - name: Archivage du Rapport
+        if: always() # On garde le rapport même si ça échoue !
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapport-final
+          path: reports/ # <--- Levier n°3
+
+  mise-en-prod:
+    needs: audit-qualite # <--- La dépendance cruciale
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Déploiement Flash
+        run: curl -X POST ${{ secrets.DEPLOY_URL }} # <--- Levier n°4
